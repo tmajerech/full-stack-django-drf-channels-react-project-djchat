@@ -1,0 +1,6 @@
+venv/
+djchat/db.sqlite3
+djchat/.env
+.DS_Store
+__pycache__
+.idea
