@@ -1,0 +1,7 @@
+openapi: 3.0.3
+info:
+  title: TITLE
+  version: 1.0.0
+  description: DESCRIPTION
+paths: {}
+components: {}
