@@ -1,9 +1,19 @@
 import { Box, styled, useMediaQuery, useTheme } from "@mui/material";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import DrawerToggle from "../components/PrimaryDraw/DrawerToggle";
 import MuiDrawer from "@mui/material/Drawer";
+import React from "react";
 
-const PrimaryDraw = () => {
+type Props = {
+  children: ReactNode;
+};
+type ChildProps = {
+  open: boolean;
+};
+
+type ChildElement = React.ReactElement<ChildProps>;
+
+const PrimaryDraw: React.FC<Props> = ({ children }) => {
   const theme = useTheme();
   const [open, setOpen] = useState(true);
   const bellow600 = useMediaQuery("(max-width:599px)");
@@ -15,37 +25,38 @@ const PrimaryDraw = () => {
     setOpen(false);
   };
 
-	const openedMixin = () => ({
-		transition: theme.transitions.create("width", {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.enteringScreen,
-		}),
-		overflowX: "hidden",
-	})
-	const closedMixin = () => ({
-		transition: theme.transitions.create("wicth", {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.enteringScreen,
-		}),
-		overflowX: "hidden",
-		width: theme.primaryDraw.closed
-	})
+  const openedMixin = () => ({
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    overflowX: "hidden",
+  });
+  const closedMixin = () => ({
+    transition: theme.transitions.create("wicth", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    overflowX: "hidden",
+    width: theme.primaryDraw.closed,
+  });
 
-	const Drawer = styled(MuiDrawer, {})(({theme, open}) => ({
-		width: theme.primaryDraw.width,
-		whiteSpace: "nowrap",
-		boxSizing: "border-box",
-		...(open && {
-			...openedMixin(),
-			"& .MuiDrawer-paper": openedMixin(),
-		}),
-		...(!open && {
-			...closedMixin(),
-			"& .MuiDrawer-paper": closedMixin(),
-		}),
-
-	}));
-
+  const Drawer = styled(
+    MuiDrawer,
+    {}
+  )(({ theme, open }) => ({
+    width: theme.primaryDraw.width,
+    whiteSpace: "nowrap",
+    boxSizing: "border-box",
+    ...(open && {
+      ...openedMixin(),
+      "& .MuiDrawer-paper": openedMixin(),
+    }),
+    ...(!open && {
+      ...closedMixin(),
+      "& .MuiDrawer-paper": closedMixin(),
+    }),
+  }));
 
   useEffect(() => {
     setOpen(!bellow600);
@@ -73,8 +84,17 @@ const PrimaryDraw = () => {
             width: open ? "auto" : "100%",
           }}
         >
-          <DrawerToggle open={open} handleDrawerClosed={handleDrawerClosed} handleDrawerOpen={handleDrawerOpen} ></DrawerToggle>
+          <DrawerToggle
+            open={open}
+            handleDrawerClosed={handleDrawerClosed}
+            handleDrawerOpen={handleDrawerOpen}
+          ></DrawerToggle>
         </Box>
+        {React.Children.map(children, (child) => {
+          return React.isValidElement(child)
+            ? React.cloneElement(child as ChildElement, { open })
+            : child;
+        })}
       </Box>
     </Drawer>
   );
