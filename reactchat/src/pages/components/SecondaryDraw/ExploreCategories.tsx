@@ -43,7 +43,6 @@ const ExploreCategories = () => {
           borderBottom: `1px solid ${theme.palette.divider}`,
           position: "sticky",
           top: 0,
-          backgroundColor: theme.palette.background.default,
         }}
       >
         explore

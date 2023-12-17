@@ -31,7 +31,7 @@ declare module "@mui/material/styles" {
   }
 }
 
-export const createMuiTheme = () => {
+export const createMuiTheme = (mode: "light" | "dark") => {
   let theme = createTheme({
     typography: {
       fontFamily: ["Roboto", "sans-serif"].join(","),
@@ -53,6 +53,9 @@ export const createMuiTheme = () => {
       width: 240,
       closed: 70,
       minWidth: 100,
+    },
+    palette: {
+      mode,
     },
     components: {
       MuiAppBar: {

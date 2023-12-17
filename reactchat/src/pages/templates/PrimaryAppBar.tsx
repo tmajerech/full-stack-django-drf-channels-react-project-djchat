@@ -12,6 +12,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import { useEffect, useState } from "react";
 import ExploreCategories from "../components/SecondaryDraw/ExploreCategories";
+import AccountButton from "../components/PrimaryAppBar/AccountButton";
 
 const PrimaryAppBar = () => {
   const theme = useTheme();
@@ -44,7 +45,6 @@ const PrimaryAppBar = () => {
     <AppBar
       sx={{
         zIndex: (theme) => theme.zIndex.drawer + 2,
-        backgroundColor: theme.palette.background.default,
         borderBottom: `1px solid ${theme.palette.divider}`,
       }}
     >
@@ -80,6 +80,8 @@ const PrimaryAppBar = () => {
             DJCHAT
           </Typography>
         </Link>
+        <Box sx={{ flexGrow: 1 }}></Box>
+        <AccountButton />
       </Toolbar>
     </AppBar>
   );
