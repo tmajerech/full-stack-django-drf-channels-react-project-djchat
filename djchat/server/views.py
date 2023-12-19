@@ -41,8 +41,8 @@ class ServerListViewSet(viewsets.ViewSet):
         by_serverid = request.query_params.get("by_serverid")
         with_num_members = request.query_params.get("with_num_members") == "true"
 
-        if (by_user or by_serverid) and not request.user.is_authenticated:
-            raise AuthenticationFailed()
+        # if (by_user or by_serverid) and not request.user.is_authenticated:
+        #     raise AuthenticationFailed()
 
         if category:
             queryset = queryset.filter(category__name=category)
