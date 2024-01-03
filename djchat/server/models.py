@@ -36,7 +36,7 @@ class Category(models.Model):
         super(Category, self).save(*args, **kwargs)
 
     @receiver(models.signals.pre_delete, sender="server.Category")
-    def category_delete_files(self, instance, **kwargs):
+    def category_delete_files(sender, instance, **kwargs):
         for field in instance._meta.fields:
             if field.name == "icon":
                 file = getattr(instance, field.name)
@@ -76,7 +76,7 @@ class Server(models.Model):
         super(Server, self).save(*args, **kwargs)
 
     @receiver(models.signals.pre_delete, sender="server.Server")
-    def server_delete_files(self, instance, **kwargs):
+    def server_delete_files(sender, instance, **kwargs):
         for field in instance._meta.fields:
             if field.name == "icon" or field.name == "banner":
                 file = getattr(instance, field.name)

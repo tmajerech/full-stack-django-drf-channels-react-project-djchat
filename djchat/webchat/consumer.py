@@ -14,6 +14,7 @@ class WebChatConsumer(JsonWebsocketConsumer):
         self.user = None
 
     def connect(self):
+        print("wtf")
         self.accept()
 
         self.channel_id = self.scope["url_route"]["kwargs"]["channelId"]

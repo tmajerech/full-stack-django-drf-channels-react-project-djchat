@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from webchat.models import Message
+from .models import Message
 
 
 class MessageSerializer(serializers.ModelSerializer):

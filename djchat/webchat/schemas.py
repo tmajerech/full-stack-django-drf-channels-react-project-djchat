@@ -1,7 +1,7 @@
 from drf_spectacular.types import OpenApiTypes
-from drf_spectacular.utils import extend_schema, OpenApiParameter
+from drf_spectacular.utils import OpenApiParameter, extend_schema
 
-from webchat.serializers import MessageSerializer
+from .serializers import MessageSerializer
 
 list_message_docs = extend_schema(
     responses=MessageSerializer(many=True),
@@ -10,7 +10,7 @@ list_message_docs = extend_schema(
             name="channel_id",
             type=OpenApiTypes.STR,
             location=OpenApiParameter.QUERY,
-            description="ID of the channel"
+            description="ID of the channel",
         )
-    ]
+    ],
 )

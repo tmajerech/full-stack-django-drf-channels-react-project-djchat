@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
-  title: TITLE
+  title: Your Project API
   version: 1.0.0
-  description: DESCRIPTION
+  description: Your project description
 paths: {}
 components: {}

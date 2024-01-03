@@ -1,13 +1,9 @@
-from django.shortcuts import render
-
-# Create your views here.
-from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-from webchat.models import Conversation
-from webchat.schemas import list_message_docs
-from webchat.serializers import MessageSerializer
+from .models import Conversation
+from .schemas import list_message_docs
+from .serializers import MessageSerializer
 
 
 class MessageViewSet(viewsets.ViewSet):
