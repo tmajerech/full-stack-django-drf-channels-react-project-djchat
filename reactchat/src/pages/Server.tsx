@@ -3,12 +3,12 @@ import PrimaryAppBar from "./templates/PrimaryAppBar";
 import PrimaryDraw from "./templates/PrimaryDraw";
 import SecondaryDraw from "./templates/SecondaryDraw";
 import Main from "./templates/Main";
-import MessageInterface from "./components/Main/MessageInterface";
-import ServerChannels from "./components/SecondaryDraw/ServerChannels";
-import UserServers from "./components/PrimaryDraw/UserServers";
-import { useNavigate, useParams } from "react-router-dom";
+import MessageInterface from "../components/Main/MessageInterface";
+import ServerChannels from "../components/SecondaryDraw/ServerChannels";
+import UserServers from "../components/PrimaryDraw/UserServers";
+import { useParams, useNavigate } from "react-router-dom";
+import { Server } from "../@types/server.d";
 import useCrud from "../hooks/useCrud";
-import { Server } from "../@types/server";
 import { useEffect } from "react";
 
 const Server = () => {
@@ -20,7 +20,17 @@ const Server = () => {
     `/server/select/?by_serverid=${serverId}`
   );
 
-  const isChannel = (): boolean => {
+  if (error !== null && error.message === "400") {
+    navigate("/");
+    return null;
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // Check if the channelId is valid by searching for it in the data fetched from the API
+  const isChannel = (): Boolean => {
     if (!channelId) {
       return true;
     }
@@ -33,19 +43,10 @@ const Server = () => {
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
-
-  useEffect(() => {
     if (!isChannel()) {
       navigate(`/server/${serverId}`);
     }
   }, [isChannel, channelId]);
-
-  if (error !== null && error.message === "400") {
-    navigate("/");
-    return null;
-  }
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -63,5 +64,4 @@ const Server = () => {
     </Box>
   );
 };
-
 export default Server;

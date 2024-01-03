@@ -7,20 +7,16 @@ import {
   Toolbar,
   Typography,
   useMediaQuery,
-  useTheme,
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useEffect, useState } from "react";
-import ExploreCategories from "../components/SecondaryDraw/ExploreCategories";
-import AccountButton from "../components/PrimaryAppBar/AccountButton";
+import ExploreCategories from "../../components/SecondaryDraw/ExploreCategories";
+import AccountButton from "../../components/PrimaryAppBar/AccountButton";
 
 const PrimaryAppBar = () => {
-  const theme = useTheme();
   const [sideMenu, setSideMenu] = useState(false);
-
-  const toggleDrawer = (open: boolean) => () => {
-    setSideMenu(open);
-  };
+  const theme = useTheme();
 
   const isSmallScreen = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -28,12 +24,23 @@ const PrimaryAppBar = () => {
     if (isSmallScreen && sideMenu) {
       setSideMenu(false);
     }
-  }, [isSmallScreen, sideMenu]);
+  }, [isSmallScreen]);
+
+  const toggleDrawer =
+    (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event.type === "keydown" &&
+        ((event as React.KeyboardEvent).key === "Tab" ||
+          (event as React.KeyboardEvent).key === "Shift")
+      ) {
+        return;
+      }
+      setSideMenu(open);
+    };
 
   const list = () => (
     <Box
       sx={{ paddingTop: `${theme.primaryAppBar.height}px`, minWidth: 200 }}
-      role="presentation"
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
     >
@@ -45,6 +52,7 @@ const PrimaryAppBar = () => {
     <AppBar
       sx={{
         zIndex: (theme) => theme.zIndex.drawer + 2,
+        backgroundColor: theme.palette.background.default,
         borderBottom: `1px solid ${theme.palette.divider}`,
       }}
     >
@@ -74,6 +82,7 @@ const PrimaryAppBar = () => {
         <Link href="/" underline="none" color="inherit">
           <Typography
             variant="h6"
+            noWrap
             component="div"
             sx={{ display: { fontWeight: 700, letterSpacing: "-0.5px" } }}
           >
@@ -86,5 +95,4 @@ const PrimaryAppBar = () => {
     </AppBar>
   );
 };
-
 export default PrimaryAppBar;

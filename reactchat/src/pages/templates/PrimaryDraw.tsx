@@ -1,29 +1,24 @@
-import { Box, styled, useMediaQuery, useTheme } from "@mui/material";
-import { ReactNode, useEffect, useState } from "react";
-import DrawerToggle from "../components/PrimaryDraw/DrawerToggle";
+import { Box, useMediaQuery, styled } from "@mui/material";
+import { useEffect, useState, ReactNode } from "react";
+import { useTheme } from "@mui/material/styles";
+import DrawerToggle from "../../components/PrimaryDraw/DrawToggle";
 import MuiDrawer from "@mui/material/Drawer";
 import React from "react";
 
 type Props = {
   children: ReactNode;
 };
+
 type ChildProps = {
-  open: boolean;
+  open: Boolean;
 };
 
 type ChildElement = React.ReactElement<ChildProps>;
 
 const PrimaryDraw: React.FC<Props> = ({ children }) => {
   const theme = useTheme();
-  const [open, setOpen] = useState(true);
-  const bellow600 = useMediaQuery("(max-width:599px)");
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClosed = () => {
-    setOpen(false);
-  };
+  const below600 = useMediaQuery("(max-width:599px)");
+  const [open, setOpen] = useState(!below600);
 
   const openedMixin = () => ({
     transition: theme.transitions.create("width", {
@@ -32,8 +27,9 @@ const PrimaryDraw: React.FC<Props> = ({ children }) => {
     }),
     overflowX: "hidden",
   });
+
   const closedMixin = () => ({
-    transition: theme.transitions.create("wicth", {
+    transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -59,17 +55,25 @@ const PrimaryDraw: React.FC<Props> = ({ children }) => {
   }));
 
   useEffect(() => {
-    setOpen(!bellow600);
-  }, [bellow600]);
+    setOpen(!below600);
+  }, [below600]);
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
 
   return (
     <Drawer
       open={open}
-      variant={bellow600 ? "temporary" : "permanent"}
+      variant={below600 ? "temporary" : "permanent"}
       PaperProps={{
         sx: {
           mt: `${theme.primaryAppBar.height}px`,
-          height: `calc(100vh - ${theme.primaryAppBar.height}px)`,
+          height: `calc(100vh - ${theme.primaryAppBar.height}px )`,
           width: theme.primaryDraw.width,
         },
       }}
@@ -86,9 +90,9 @@ const PrimaryDraw: React.FC<Props> = ({ children }) => {
         >
           <DrawerToggle
             open={open}
-            handleDrawerClosed={handleDrawerClosed}
+            handleDrawerClose={handleDrawerClose}
             handleDrawerOpen={handleDrawerOpen}
-          ></DrawerToggle>
+          />
         </Box>
         {React.Children.map(children, (child) => {
           return React.isValidElement(child)

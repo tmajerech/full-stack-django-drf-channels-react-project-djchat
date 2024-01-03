@@ -1,4 +1,5 @@
-import { Box, useTheme } from "@mui/material";
+import { Box } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import { ReactNode } from "react";
 
 type Props = {
@@ -7,13 +8,12 @@ type Props = {
 
 const Main: React.FC<Props> = ({ children }) => {
   const theme = useTheme();
-
   return (
     <Box
       sx={{
-        height: `calc(100vh - ${theme.primaryAppBar.height}px)`,
-        mt: `${theme.primaryAppBar.height}px`,
         flexGrow: 1,
+        mt: `${theme.primaryAppBar.height}px`,
+        height: `calc(100vh - ${theme.primaryAppBar.height}px )`,
         overflow: "hidden",
       }}
     >
@@ -21,5 +21,4 @@ const Main: React.FC<Props> = ({ children }) => {
     </Box>
   );
 };
-
 export default Main;
