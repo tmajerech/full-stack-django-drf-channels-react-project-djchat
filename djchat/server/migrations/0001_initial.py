@@ -62,7 +62,7 @@ class Migration(migrations.Migration):
                         blank=True,
                         null=True,
                         upload_to=server.models.server_banner_upload_path,
-                        validators=[server.validators.validate_image_file_extension],
+                        validators=[server.validators.validate_image_file_exstension],
                     ),
                 ),
                 (
@@ -73,7 +73,7 @@ class Migration(migrations.Migration):
                         upload_to=server.models.server_icon_upload_path,
                         validators=[
                             server.validators.validate_icon_image_size,
-                            server.validators.validate_image_file_extension,
+                            server.validators.validate_image_file_exstension,
                         ],
                     ),
                 ),

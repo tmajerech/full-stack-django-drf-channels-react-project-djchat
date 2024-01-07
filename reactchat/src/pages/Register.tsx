@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuthServiceContext } from "../context/AuthContext";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 
-const Login = () => {
-  const { login } = useAuthServiceContext();
+const Register = () => {
+  const { register } = useAuthServiceContext();
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -23,15 +23,19 @@ const Login = () => {
     },
     onSubmit: async (values) => {
       const { username, password } = values;
-      const status = await login(username, password);
-      if (status === 401) {
+      const status = await register(username, password);
+      if (status === 409) {
+        formik.setErrors({
+          username: "Invalid username",
+        });
+      } else if (status === 401) {
         console.log("Unauthorised");
         formik.setErrors({
           username: "Invalid username or password",
           password: "Invalid username or password",
         });
       } else {
-        navigate("/");
+        navigate("/login");
       }
     },
   });
@@ -54,7 +58,7 @@ const Login = () => {
             pb: 2,
           }}
         >
-          Sign in
+          Register
         </Typography>
         <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 1 }}>
           <TextField
@@ -94,4 +98,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

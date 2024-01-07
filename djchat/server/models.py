@@ -3,7 +3,7 @@ from django.db import models
 from django.dispatch import receiver
 from django.shortcuts import get_object_or_404
 
-from .validators import validate_icon_image_size, validate_image_file_extension
+from .validators import validate_icon_image_size, validate_image_file_exstension
 
 
 def server_icon_upload_path(instance, filename):
@@ -57,13 +57,13 @@ class Server(models.Model):
         upload_to=server_banner_upload_path,
         null=True,
         blank=True,
-        validators=[validate_image_file_extension],
+        validators=[validate_image_file_exstension],
     )
     icon = models.ImageField(
         upload_to=server_icon_upload_path,
         null=True,
         blank=True,
-        validators=[validate_icon_image_size, validate_image_file_extension],
+        validators=[validate_icon_image_size, validate_image_file_exstension],
     )
 
     def save(self, *args, **kwargs):

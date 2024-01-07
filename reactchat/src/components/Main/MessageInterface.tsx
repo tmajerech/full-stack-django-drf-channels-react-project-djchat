@@ -1,8 +1,3 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
-import useWebSocket from "react-use-websocket";
-import useCrud from "../../hooks/useCrud";
-import { Server } from "../../@types/server.d";
 import {
   Avatar,
   Box,
@@ -16,7 +11,9 @@ import {
 } from "@mui/material";
 import MessageInterfaceChannels from "./MessageInterfaceChannels";
 import Scroll from "./Scroll";
-import React from "react";
+import { useParams } from "react-router-dom";
+import { Server } from "../../@types/server.d";
+import useChatWebSocket from "../../services/chatService";
 
 interface SendMessageData {
   type: string;
@@ -37,44 +34,14 @@ interface Message {
 const messageInterface = (props: ServerChannelProps) => {
   const { data } = props;
   const theme = useTheme();
-  const [newMessage, setNewMessage] = useState<Message[]>([]);
-  const [message, setMessage] = useState("");
+
   const { serverId, channelId } = useParams();
+
+  const { newMessage, message, setMessage, sendJsonMessage } = useChatWebSocket(channelId || "", serverId || "");
+
   const server_name = data?.[0]?.name ?? "Server";
-  const { fetchData } = useCrud<Server>(
-    [],
-    `/messages/?channel_id=${channelId}`
-  );
 
-  const socketUrl = channelId
-    ? `ws://127.0.0.1:42069/${serverId}/${channelId}`
-    : null;
-
-  const { sendJsonMessage } = useWebSocket(socketUrl, {
-    onOpen: async () => {
-      try {
-        const data = await fetchData();
-        setNewMessage([]);
-        setNewMessage(Array.isArray(data) ? data : []);
-        console.log("Connected!!!");
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    onClose: () => {
-      console.log("Closed!");
-    },
-    onError: () => {
-      console.log("Error!");
-    },
-    onMessage: (msg) => {
-      const data = JSON.parse(msg.data);
-      setNewMessage((prev_msg) => [...prev_msg, data.new_message]);
-      setMessage("");
-    },
-  });
-
-  const handleKeyDown = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
       sendJsonMessage({
@@ -206,6 +173,7 @@ const messageInterface = (props: ServerChannelProps) => {
               </List>
             </Scroll>
           </Box>
+          
           <Box sx={{ position: "sticky", bottom: 0, width: "100%" }}>
             <form
               onSubmit={handleSubmit}
